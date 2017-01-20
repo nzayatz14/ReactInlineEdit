@@ -122,7 +122,9 @@ export default class InlineEdit extends React.Component {
 
   textChanged = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event);
+      let newProp = {};
+      newProp[this.props.paramName] = event.target.value;
+      this.props.onChange(newProp);
     }
     this.setState({
       text: event.target.value.trim()

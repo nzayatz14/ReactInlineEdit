@@ -247,7 +247,9 @@
 	      }
 	    }, _this.textChanged = function (event) {
 	      if (_this.props.onChange) {
-	        _this.props.onChange(event);
+	        var newProp = {};
+	        newProp[_this.props.paramName] = event.target.value;
+	        _this.props.onChange(newProp);
 	      }
 	      _this.setState({
 	        text: event.target.value.trim()
