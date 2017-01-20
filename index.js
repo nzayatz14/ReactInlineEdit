@@ -76,11 +76,9 @@ var InlineEdit = function (_React$Component) {
         _this.cancelEditing();
       }
     }, _this.textChanged = function (event) {
-      if (_this.props.onChange) {
-        var newProp = {};
-        newProp[_this.props.paramName] = event.target.value;
-        _this.props.onChange(newProp);
-      }
+      var newProp = {};
+      newProp[_this.props.paramName] = event.target.value;
+      _this.props.change(newProp);
       _this.setState({
         text: event.target.value.trim()
       });
@@ -174,7 +172,6 @@ InlineEdit.propTypes = {
   text: _react2.default.PropTypes.string.isRequired,
   paramName: _react2.default.PropTypes.string.isRequired,
   change: _react2.default.PropTypes.func.isRequired,
-  onChange: _react2.default.PropTypes.func,
   placeholder: _react2.default.PropTypes.string,
   className: _react2.default.PropTypes.string,
   activeClassName: _react2.default.PropTypes.string,
