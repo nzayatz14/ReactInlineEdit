@@ -10,6 +10,7 @@ export default class InlineEdit extends React.Component {
     text: React.PropTypes.string.isRequired,
     paramName: React.PropTypes.string.isRequired,
     change: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
     className: React.PropTypes.string,
     activeClassName: React.PropTypes.string,
@@ -120,6 +121,9 @@ export default class InlineEdit extends React.Component {
   };
 
   textChanged = (event) => {
+    if (this.props.onChange) {
+      this.props.onChange(event);
+    }
     this.setState({
       text: event.target.value.trim()
     });
