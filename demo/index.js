@@ -210,42 +210,7 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InlineEdit.__proto__ || Object.getPrototypeOf(InlineEdit)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	      editing: _this.props.editing,
-	      text: _this.props.text,
-	      minLength: _this.props.minLength,
-	      maxLength: _this.props.maxLength
-	    }, _this.startEditing = function (e) {
-	      if (_this.props.stopPropagation) {
-	        e.stopPropagation();
-	      }
-	      _this.setState({ editing: true, text: _this.props.text });
-	    }, _this.finishEditing = function () {
-	      if (_this.isInputValid(_this.state.text) && _this.props.text != _this.state.text) {
-	        _this.commitEditing();
-	      } else if (_this.props.text === _this.state.text || !_this.isInputValid(_this.state.text)) {
-	        _this.cancelEditing();
-	      }
-	    }, _this.cancelEditing = function () {
-	      _this.setState({ editing: false, text: _this.props.text });
-	    }, _this.commitEditing = function () {
-	      _this.setState({ editing: false, text: _this.state.text });
-	      var newProp = {};
-	      newProp[_this.props.paramName] = _this.state.text;
-	      _this.props.change(newProp);
-	    }, _this.clickWhenEditing = function (e) {
-	      if (_this.props.stopPropagation) {
-	        e.stopPropagation();
-	      }
-	    }, _this.isInputValid = function (text) {
-	      return text.length >= _this.state.minLength && text.length <= _this.state.maxLength;
-	    }, _this.keyDown = function (event) {
-	      if (event.keyCode === 13) {
-	        _this.finishEditing();
-	      } else if (event.keyCode === 27) {
-	        _this.cancelEditing();
-	      }
-	    }, _this.textChanged = function (event) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = InlineEdit.__proto__ || Object.getPrototypeOf(InlineEdit)).call.apply(_ref, [this].concat(args))), _this), _this.textChanged = function (event) {
 	      var newProp = {};
 	      newProp[_this.props.paramName] = event.target.value;
 	      _this.props.change(newProp);
@@ -266,29 +231,14 @@
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var isTextChanged = nextProps.text !== this.props.text;
-	      var isEditingChanged = nextProps.editing !== this.props.editing;
-	      var nextState = {};
-	      if (isTextChanged) {
-	        nextState.text = nextProps.text;
-	      }
-	      if (isEditingChanged) {
-	        nextState.editing = nextProps.editing;
-	      }
-	      if (isTextChanged || isEditingChanged) {
-	        this.setState(nextState);
-	      }
-	    }
+	    value: function componentWillReceiveProps(nextProps) {}
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
 	      var inputElem = _reactDom2.default.findDOMNode(this.refs.input);
-	      if (this.state.editing && !prevState.editing) {
+	      if (this.props.editing && !prevProps.editing) {
 	        inputElem.focus();
 	        selectInputText(inputElem);
-	      } else if (this.state.editing && prevProps.text != this.props.text) {
-	        this.finishEditing();
 	      }
 	    }
 	  }, {
@@ -321,12 +271,9 @@
 	          var _Element2 = this.props.element || this.props.editingElement;
 
 	          return _react2.default.createElement(_Element2, {
-	            onClick: this.clickWhenEditing,
-	            onKeyDown: this.keyDown,
-	            onBlur: this.finishEditing,
 	            className: this.props.activeClassName,
 	            placeholder: this.props.placeholder,
-	            defaultValue: this.state.text,
+	            value: this.props.text,
 	            onChange: this.textChanged,
 	            style: this.props.style,
 	            ref: 'input' });
