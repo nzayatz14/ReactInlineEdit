@@ -294,13 +294,18 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+
 	      if (this.props.isDisabled) {
+
 	        var Element = this.props.element || this.props.staticElement;
+
 	        return _react2.default.createElement(Element, {
 	          className: this.props.className,
 	          style: this.props.style }, this.state.text || this.props.placeholder);
-	      } else if (!this.state.editing) {
+	      } else if (!this.props.editing) {
+
 	        var _Element = this.props.element || this.props.staticElement;
+
 	        return _react2.default.createElement(_Element, {
 	          className: this.props.className,
 	          onClick: this.startEditing,
@@ -309,9 +314,12 @@
 	      } else {
 
 	        if (this.props.editingElementRenderer) {
+
 	          return this.props.editingElementRenderer();
 	        } else {
+
 	          var _Element2 = this.props.element || this.props.editingElement;
+
 	          return _react2.default.createElement(_Element2, {
 	            onClick: this.clickWhenEditing,
 	            onKeyDown: this.keyDown,

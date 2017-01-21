@@ -129,15 +129,21 @@ export default class InlineEdit extends React.Component {
   };
 
   render() {
+
     if (this.props.isDisabled) {
+
       const Element = this.props.element || this.props.staticElement;
+
       return <Element
         className={this.props.className}
         style={this.props.style} >
         {this.state.text || this.props.placeholder}
       </Element>;
-    } else if (!this.state.editing) {
+
+    } else if (!this.props.editing) {
+
       const Element = this.props.element || this.props.staticElement;
+
       return <Element
         className={this.props.className}
         onClick={this.startEditing}
@@ -145,12 +151,17 @@ export default class InlineEdit extends React.Component {
         style={this.props.style} >
         {this.state.text || this.props.placeholder}
       </Element>;
+
     } else {
 
       if (this.props.editingElementRenderer) {
+
         return this.props.editingElementRenderer();
+
       } else {
+
         const Element = this.props.element || this.props.editingElement;
+
         return <Element
           onClick={this.clickWhenEditing}
           onKeyDown={this.keyDown}
@@ -161,6 +172,7 @@ export default class InlineEdit extends React.Component {
           onChange={this.textChanged}
           style={this.props.style}
           ref="input" />;
+
       }
     }
   }
