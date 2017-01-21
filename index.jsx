@@ -35,6 +35,13 @@ export default class InlineEdit extends React.Component {
     editing: false
   };
 
+  state = {
+    editing: this.props.editing,
+    text: this.props.text,
+    minLength: this.props.minLength,
+    maxLength: this.props.maxLength,
+  };
+
   componentWillMount() {
     this.isInputValid = this.props.validate || this.isInputValid;
     // Warn about deprecated elements
@@ -44,16 +51,73 @@ export default class InlineEdit extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
+    const isTextChanged = (nextProps.text !== this.props.text);
+    const isEditingChanged = (nextProps.editing !== this.props.editing);
+    let nextState = {};
+    if (isTextChanged) {
+      nextState.text = nextProps.text;
+    }
+    if (isEditingChanged) {
+      nextState.editing = nextProps.editing;
+    }
+    if (isTextChanged || isEditingChanged) {
+      this.setState(nextState);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     let inputElem = ReactDOM.findDOMNode(this.refs.input);
-    if (this.props.editing && !prevProps.editing) {
+    if (this.state.editing && !prevState.editing) {
       inputElem.focus();
       selectInputText(inputElem);
+    } else if (this.state.editing && prevProps.text != this.props.text) {
+      this.finishEditing();
     }
   }
+
+  startEditing = (e) => {
+    if (this.props.stopPropagation) {
+      e.stopPropagation()
+    }
+    this.setState({editing: true, text: this.props.text});
+  };
+
+  finishEditing = () => {
+    if (this.isInputValid(this.state.text) && this.props.text != this.state.text){
+      this.commitEditing();
+    } else if (this.props.text === this.state.text || !this.isInputValid(this.state.text)) {
+      this.cancelEditing();
+    }
+  };
+
+  cancelEditing = () => {
+    this.setState({editing: false, text: this.props.text});
+  };
+
+  commitEditing = () => {
+    this.setState({editing: false, text: this.state.text});
+    let newProp = {};
+    newProp[this.props.paramName] = this.state.text;
+    this.props.change(newProp);
+  };
+
+  clickWhenEditing = (e) => {
+    if (this.props.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
+
+  isInputValid = (text) => {
+    return (text.length >= this.state.minLength && text.length <= this.state.maxLength);
+  };
+
+  keyDown = (event) => {
+    if (event.keyCode === 13) {
+      this.finishEditing();
+    } else if (event.keyCode === 27) {
+      this.cancelEditing();
+    }
+  };
 
   textChanged = (event) => {
     let newProp = {};
@@ -99,9 +163,12 @@ export default class InlineEdit extends React.Component {
         const Element = this.props.element || this.props.editingElement;
 
         return <Element
+          onClick={this.clickWhenEditing}
+          onKeyDown={this.keyDown}
+          onBlur={this.finishEditing}
           className={this.props.activeClassName}
           placeholder={this.props.placeholder}
-          value={this.props.text}
+          value={this.state.text}
           onChange={this.textChanged}
           style={this.props.style}
           ref="input" />;
