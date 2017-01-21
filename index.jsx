@@ -120,30 +120,21 @@ export default class InlineEdit extends React.Component {
   };
 
   textChanged = (event) => {
-    let newProp = {};
-    newProp[this.props.paramName] = event.target.value;
-    this.props.change(newProp);
     this.setState({
       text: event.target.value.trim()
     });
   };
 
   render() {
-
     if (this.props.isDisabled) {
-
       const Element = this.props.element || this.props.staticElement;
-
       return <Element
         className={this.props.className}
         style={this.props.style} >
         {this.state.text || this.props.placeholder}
       </Element>;
-
-    } else if (!this.props.editing) {
-
+    } else if (!this.state.editing) {
       const Element = this.props.element || this.props.staticElement;
-
       return <Element
         className={this.props.className}
         onClick={this.startEditing}
@@ -151,28 +142,22 @@ export default class InlineEdit extends React.Component {
         style={this.props.style} >
         {this.state.text || this.props.placeholder}
       </Element>;
-
     } else {
 
       if (this.props.editingElementRenderer) {
-
         return this.props.editingElementRenderer();
-
       } else {
-
         const Element = this.props.element || this.props.editingElement;
-
         return <Element
           onClick={this.clickWhenEditing}
           onKeyDown={this.keyDown}
           onBlur={this.finishEditing}
           className={this.props.activeClassName}
           placeholder={this.props.placeholder}
-          value={this.state.text}
+          defaultValue={this.state.text}
           onChange={this.textChanged}
           style={this.props.style}
           ref="input" />;
-
       }
     }
   }

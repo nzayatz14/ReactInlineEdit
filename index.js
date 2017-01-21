@@ -76,9 +76,6 @@ var InlineEdit = function (_React$Component) {
         _this.cancelEditing();
       }
     }, _this.textChanged = function (event) {
-      var newProp = {};
-      newProp[_this.props.paramName] = event.target.value;
-      _this.props.change(newProp);
       _this.setState({
         text: event.target.value.trim()
       });
@@ -124,11 +121,8 @@ var InlineEdit = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-
       if (this.props.isDisabled) {
-
         var Element = this.props.element || this.props.staticElement;
-
         return _react2.default.createElement(
           Element,
           {
@@ -136,10 +130,8 @@ var InlineEdit = function (_React$Component) {
             style: this.props.style },
           this.state.text || this.props.placeholder
         );
-      } else if (!this.props.editing) {
-
+      } else if (!this.state.editing) {
         var _Element = this.props.element || this.props.staticElement;
-
         return _react2.default.createElement(
           _Element,
           {
@@ -152,19 +144,16 @@ var InlineEdit = function (_React$Component) {
       } else {
 
         if (this.props.editingElementRenderer) {
-
           return this.props.editingElementRenderer();
         } else {
-
           var _Element2 = this.props.element || this.props.editingElement;
-
           return _react2.default.createElement(_Element2, {
             onClick: this.clickWhenEditing,
             onKeyDown: this.keyDown,
             onBlur: this.finishEditing,
             className: this.props.activeClassName,
             placeholder: this.props.placeholder,
-            value: this.state.text,
+            defaultValue: this.state.text,
             onChange: this.textChanged,
             style: this.props.style,
             ref: 'input' });
